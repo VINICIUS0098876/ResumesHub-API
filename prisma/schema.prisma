@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model jobs {
+  id_job       Int       @id @default(autoincrement())
+  id_user      Int
+  title        String    @db.VarChar(200)
+  description  String?   @db.Text
+  requirements String?   @db.Text
+  salary_range String?   @db.VarChar(50)
+  location     String?   @db.VarChar(200)
+  created_at   DateTime? @default(now()) @db.Timestamp(0)
+  users        users     @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: NoAction, map: "jobs_ibfk_1")
+
+  @@index([id_user], map: "id_user")
+}
+
+model resumes {
+  id_resume        Int       @id @default(autoincrement())
+  id_user          Int
+  phone            String?   @db.VarChar(20)
+  skills           String?   @db.Text
+  experience_years Int?
+  desired_position String?   @db.VarChar(200)
+  created_at       DateTime? @default(now()) @db.Timestamp(0)
+  users            users     @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: NoAction, map: "resumes_ibfk_1")
+
+  @@index([id_user], map: "id_user")
+}
+
+model users {
+  id_user       Int             @id @default(autoincrement())
+  name_user     String          @db.VarChar(250)
+  email         String          @unique(map: "email") @db.VarChar(250)
+  password_user String          @db.VarChar(250)
+  role_user     users_role_user
+  created_at    DateTime?       @default(now()) @db.Timestamp(0)
+  jobs          jobs[]
+  resumes       resumes[]
+}
+
+enum users_role_user {
+  Candidato
+  Empresa
+}
