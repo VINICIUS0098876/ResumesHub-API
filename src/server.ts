@@ -1,26 +1,26 @@
-import Express from "express";
+import express from "express";
 import cors from "cors";
-import BodyParser from "body-parser";
-import routes from './routes';
+import bodyParser from "body-parser";
+import routes from "./routes";        // Certifique-se que routes.ts está em src/
+import { setupSwagger } from "./document/swagger";
 
-const app = Express();
+const app = express();
 
-const start = async function(){
-    await app.use(cors());
-    await app.use(BodyParser.json());
-    await app.use(routes);
-    await app.use(BodyParser.json());
+// Middlewares
+app.use(cors());
+app.use(bodyParser.json());
 
-    const PORT = process.env.PORT || 3000;
+// Rotas da API
+app.use(routes);
 
-    try {
-        await app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        })
-    } catch (error) {
-        console.log("Error starting server:", error);
-        process.exit(1);
-    }
-}
+// Swagger
+setupSwagger(app);
 
-start();
+// Porta
+const PORT = process.env.PORT || 3000;
+
+// Iniciar servidor
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+    console.log(`Swagger docs available at http://localhost:${PORT}/docs`);
+});

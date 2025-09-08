@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-const router = Router();
+const routes = Router();
 
 // User routes
 
@@ -9,7 +9,7 @@ const router = Router();
 // job routes
 
 
-export default router;
+export default routes;
 
 
 
