@@ -19,6 +19,18 @@ export class CreateUserService {
         throw new Error("Preencha todos os campos");
       }
 
+      // Validação de email
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email_user)) {
+        throw new Error("E-mail inválido!");
+      }
+
+      // Validação de senha
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      if (!passwordRegex.test(password_user)) {
+        throw new Error("A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais!");
+      }
+
       const hashedPassword = await bcrypt.hash(password_user, 10);
 
       const user = await prisma.users.create({
@@ -31,6 +43,7 @@ export class CreateUserService {
       });
 
       return user;
+
     } catch (error) {
       throw new Error("Erro ao criar usuário");
     }
