@@ -5,23 +5,22 @@ import { generateToken } from "../utils/jwt";
 const prisma = prismaClient;
 
 interface User {
-  id_user?: number;
   name_user: string;
-  email_user: string;
+  email: string;
   password_user: string;
   role_user: "Candidato" | "Empresa";
 }
 
 export class CreateUserService {
-  async execute({ name_user, email_user, password_user, role_user }: User) {
+  async execute({ name_user, email, password_user, role_user }: User) {
     try {
-      if (!name_user || !email_user || !password_user || !role_user) {
+      if (!name_user || !email || !password_user || !role_user) {
         throw new Error("Preencha todos os campos");
       }
 
       // Validação de email
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(email_user)) {
+      if (!emailRegex.test(email)) {
         throw new Error("E-mail inválido!");
       }
 
@@ -36,30 +35,31 @@ export class CreateUserService {
       const user = await prisma.users.create({
         data: {
           name_user: name_user,
-          email_user: email_user,
+          email,
           password_user: hashedPassword,
           role_user: role_user,
-        },
+        }
       });
 
       return user;
 
     } catch (error) {
+      console.error(error);
       throw new Error("Erro ao criar usuário");
     }
   }
 }
 
 export class UpdateUserService {
-  async execute({
-    id_user,
+  async execute(id_user: number, {
     name_user,
-    email_user,
+    email,
     password_user,
     role_user,
   }: User) {
     try {
-      if (!name_user || !email_user || !password_user || !role_user) {
+
+      if (!name_user || !email || !password_user || !role_user) {
         throw new Error("Preencha todos os campos");
       }
 
@@ -71,14 +71,15 @@ export class UpdateUserService {
         },
         data: {
           name_user: name_user,
-          email_user: email_user,
+          email,
           password_user: hashedPassword,
-          role_user: role_user,
-        },
+          role_user: role_user
+        }
       });
 
       return user;
     } catch (error) {
+      console.error(error);
       throw new Error("Erro ao atualizar usuário");
     }
   }
@@ -117,17 +118,17 @@ export class DeleteUserService {
 }
 
 export class LoginUserService {
-  async execute(email_user: string, password_user: string) {
-    if (!email_user || !password_user) {
+  async execute(email: string, password_user: string) {
+    if (!email || !password_user) {
       throw new Error("Preencha todos os campos");
     }
 
     try {
       const user = await prisma.users.findUnique({
         where: {
-          email_user: email_user,
-        },
-      });
+          email
+        }
+      })
       if (!user) {
         throw new Error("Usuário não encontrado");
       }
@@ -150,12 +151,13 @@ export class LoginUserService {
         user: {
           id_user: user.id_user,
           name_user: user.name_user,
-          email_user: user.email_user,
+          email: user.email,
           role_user: user.role_user,
         },
         token,
       };
     } catch (error) {
+      console.error(error);
       throw new Error("Erro ao realizar login");
     }
   }
