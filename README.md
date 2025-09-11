@@ -1,4 +1,4 @@
-# ResumesHub-API - EM MANUTENÇÃO!
+# ResumesHub-API
 
 ## Visão Geral
 
@@ -7,7 +7,6 @@ O **ResumesHub-API** é uma solução moderna para centralizar e gerenciar curr�
 ## Funcionalidades
 
 - **Centralização dos currículos:** Todos os currículos enviados ficam organizados em uma única plataforma.
-- **Filtro avançado de candidatos:** Empresas podem buscar candidatos por vaga e habilidades.
 - **Segurança e controle de acesso:** Utiliza autenticação JWT e RBAC para garantir que apenas usuários autorizados possam acessar ou modificar informações sensíveis.
 - **API RESTful:** Permite integração fácil com outros sistemas ou frontends.
 - **Documentação interativa com Swagger.**
@@ -95,12 +94,12 @@ src/
    ```
 
 6. **Acesse a documentação interativa:**
-   - Normalmente disponível em `/api-docs` (Swagger).
+   - Disponível em `/docs` (Swagger).
 
 ## Autenticação e Segurança
 
 - O sistema utiliza JWT para autenticação.
-- O controle de acesso é realizado via RBAC, permitindo diferentes permissões para administradores, recrutadores e candidatos.
+- O controle de acesso é realizado via RBAC, permitindo diferentes permissões para recrutadores e candidatos.
 
 ## Contribuição
 
