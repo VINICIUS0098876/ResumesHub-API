@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const JWT_SECRET = "resumejobmatchsecret";
-const EXPIRES = 180;
+const EXPIRES = 18000000;
 
 interface JwtPayload {
   id_user: number;

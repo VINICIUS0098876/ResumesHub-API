@@ -1,14 +1,12 @@
-import { response, Router } from 'express';
-import { CreateUserController, UpdateUserController, DeleteUserController, GetUserByIdController, ListUserController, LoginUserController } from './controller/user_controller';
-import { CreateResumeController, UpdateResumeController, GetMyResumeController, GetResumeByIdController, ListResumeController, DeleteResumeController } from './controller/resume_controller';
-import { CreateJobController, UpdateJobController, DeleteJobController, GetMyJobController, GetJobByIdController, ListJobController } from './controller/job_controller';
-import { authMiddleware } from './middleware/auth';
-import { authorize } from './middleware/authorize';
-import { request } from 'http';
-
-
-const routes = Router();
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const user_controller_1 = require("./controller/user_controller");
+const resume_controller_1 = require("./controller/resume_controller");
+const job_controller_1 = require("./controller/job_controller");
+const auth_1 = require("./middleware/auth");
+const authorize_1 = require("./middleware/authorize");
+const routes = (0, express_1.Router)();
 // User routes
 /**
 * @swagger
@@ -43,8 +41,7 @@ const routes = Router();
  *       500:
  *         description: Erro interno do servidor
  */
-routes.post('/users', async (request, response) => new CreateUserController().handle(request, response));
-
+routes.post('/users', async (request, response) => new user_controller_1.CreateUserController().handle(request, response));
 /**
  * @swagger
  * /users/{id_user}:
@@ -93,8 +90,7 @@ routes.post('/users', async (request, response) => new CreateUserController().ha
  *       500:
  *         description: Erro interno do servidor
  */
-routes.put('/users/:id_user', async (request, response) => new UpdateUserController().handle(request, response));
-
+routes.put('/users/:id_user', async (request, response) => new user_controller_1.UpdateUserController().handle(request, response));
 /**
  * @swagger
  * /users/{id_user}:
@@ -120,8 +116,7 @@ routes.put('/users/:id_user', async (request, response) => new UpdateUserControl
  *       500:
  *         description: Erro interno do servidor
  */
-routes.delete('/users/:id_user', async (request, response) => new DeleteUserController().handle(request, response));
-
+routes.delete('/users/:id_user', async (request, response) => new user_controller_1.DeleteUserController().handle(request, response));
 /**
  * @swagger
  * /users/{id_user}:
@@ -153,8 +148,7 @@ routes.delete('/users/:id_user', async (request, response) => new DeleteUserCont
  *       500:
  *         description: Erro interno do servidor
  */
-routes.get('/users/:id_user', async (request, response) => new GetUserByIdController().handle(request, response));
-
+routes.get('/users/:id_user', async (request, response) => new user_controller_1.GetUserByIdController().handle(request, response));
 /**
  * @swagger
  * /users:
@@ -182,8 +176,7 @@ routes.get('/users/:id_user', async (request, response) => new GetUserByIdContro
  *       500:
  *         description: Erro interno do servidor
  */
-routes.get('/users', async (request, response) => new ListUserController().handle(request, response));
-
+routes.get('/users', async (request, response) => new user_controller_1.ListUserController().handle(request, response));
 /**
  * @swagger
  * /login:
@@ -220,10 +213,8 @@ routes.get('/users', async (request, response) => new ListUserController().handl
  *       500:
  *         description: Erro interno do servidor
  */
-routes.post('/login', async (request, response) => new LoginUserController().handle(request, response));
-
+routes.post('/login', async (request, response) => new user_controller_1.LoginUserController().handle(request, response));
 // -----------------------------------------------------------------------------------------------------------
-
 // resume routes
 /**
  * @swagger
@@ -265,8 +256,7 @@ routes.post('/login', async (request, response) => new LoginUserController().han
  *       500:
  *         description: Erro interno do servidor
  */
-routes.post('/resumes', authMiddleware, authorize(['Candidato']), async (request, response) => new CreateResumeController().handle(request,response))
-
+routes.post('/resumes', auth_1.authMiddleware, (0, authorize_1.authorize)(['Candidato']), async (request, response) => new resume_controller_1.CreateResumeController().handle(request, response));
 /**
  * @swagger
  * /resumes/me:
@@ -295,8 +285,7 @@ routes.post('/resumes', authMiddleware, authorize(['Candidato']), async (request
  *       500:
  *         description: Erro interno do servidor
  */
-routes.get('/resumes/me', authMiddleware, authorize(['Candidato']), async (request, response) => new GetMyResumeController().handle(request,response))
-
+routes.get('/resumes/me', auth_1.authMiddleware, (0, authorize_1.authorize)(['Candidato']), async (request, response) => new resume_controller_1.GetMyResumeController().handle(request, response));
 /**
  * @swagger
  * /resumes/{id_resume}:
@@ -339,8 +328,7 @@ routes.get('/resumes/me', authMiddleware, authorize(['Candidato']), async (reque
  *       500:
  *         description: Erro interno do servidor
  */
-routes.put('/resumes/:id_resume', authMiddleware, authorize(['Candidato']), async (request, response) => new UpdateResumeController().handle(request,response))
-
+routes.put('/resumes/:id_resume', auth_1.authMiddleware, (0, authorize_1.authorize)(['Candidato']), async (request, response) => new resume_controller_1.UpdateResumeController().handle(request, response));
 /**
  * @swagger
  * /resumes/{id_resume}:
@@ -370,8 +358,7 @@ routes.put('/resumes/:id_resume', authMiddleware, authorize(['Candidato']), asyn
  *       500:
  *         description: Erro interno do servidor
  */
-routes.delete('/resumes/:id_resume', authMiddleware, authorize(['Candidato']), async (request, response) => new DeleteResumeController().handle(request,response))
-
+routes.delete('/resumes/:id_resume', auth_1.authMiddleware, (0, authorize_1.authorize)(['Candidato']), async (request, response) => new resume_controller_1.DeleteResumeController().handle(request, response));
 // Resumes - Empresa
 /**
  * @swagger
@@ -406,9 +393,8 @@ routes.delete('/resumes/:id_resume', authMiddleware, authorize(['Candidato']), a
  *       500:
  *         description: Erro interno do servidor
  */
-routes.get('/resumes', authMiddleware, authorize(['Empresa']), async (request, response) => new ListResumeController().handle(request, response))
-
-/** 
+routes.get('/resumes', auth_1.authMiddleware, (0, authorize_1.authorize)(['Empresa']), async (request, response) => new resume_controller_1.ListResumeController().handle(request, response));
+/**
  * @swagger
  * /resumes/{id_resume}:
  *   get:
@@ -443,10 +429,8 @@ routes.get('/resumes', authMiddleware, authorize(['Empresa']), async (request, r
  *       500:
  *         description: Erro interno do servidor
  */
-routes.get('/resumes/:id_resume', authMiddleware, authorize(['Empresa']), async (request, response) => new GetResumeByIdController().handle(request, response))
-
+routes.get('/resumes/:id_resume', auth_1.authMiddleware, (0, authorize_1.authorize)(['Empresa']), async (request, response) => new resume_controller_1.GetResumeByIdController().handle(request, response));
 // -----------------------------------------------------------------------------------------------------------
-
 // job routes
 /**
  * @swagger
@@ -491,8 +475,7 @@ routes.get('/resumes/:id_resume', authMiddleware, authorize(['Empresa']), async 
  *       500:
  *         description: Erro interno do servidor
  */
-routes.post('/jobs', authMiddleware, authorize(['Empresa']), async (request, response) => new CreateJobController().handle(request,response))
-
+routes.post('/jobs', auth_1.authMiddleware, (0, authorize_1.authorize)(['Empresa']), async (request, response) => new job_controller_1.CreateJobController().handle(request, response));
 /**
  * @swagger
  * /jobs/me:
@@ -522,8 +505,7 @@ routes.post('/jobs', authMiddleware, authorize(['Empresa']), async (request, res
  *       500:
  *         description: Erro interno do servidor
  */
-routes.get('/jobs/me', authMiddleware, authorize(['Empresa']), async (request, response) => new GetMyJobController().handle(request,response))
-
+routes.get('/jobs/me', auth_1.authMiddleware, (0, authorize_1.authorize)(['Empresa']), async (request, response) => new job_controller_1.GetMyJobController().handle(request, response));
 /**
  * @swagger
  * /jobs/{id_job}:
@@ -568,8 +550,7 @@ routes.get('/jobs/me', authMiddleware, authorize(['Empresa']), async (request, r
  *       500:
  *         description: Erro interno do servidor
  */
-routes.put('/jobs/:id_job', authMiddleware, authorize(['Empresa']), async (request, response) => new UpdateJobController().handle(request,response))
-
+routes.put('/jobs/:id_job', auth_1.authMiddleware, (0, authorize_1.authorize)(['Empresa']), async (request, response) => new job_controller_1.UpdateJobController().handle(request, response));
 /**
  * @swagger
  * /jobs/{id_job}:
@@ -599,8 +580,7 @@ routes.put('/jobs/:id_job', authMiddleware, authorize(['Empresa']), async (reque
  *       500:
  *         description: Erro interno do servidor
  */
-routes.delete('/jobs/:id_job', authMiddleware, authorize(['Empresa']), async (request, response) => new DeleteJobController().handle(request,response))
-
+routes.delete('/jobs/:id_job', auth_1.authMiddleware, (0, authorize_1.authorize)(['Empresa']), async (request, response) => new job_controller_1.DeleteJobController().handle(request, response));
 // Jobs - Candidato
 /**
  * @swagger
@@ -631,8 +611,7 @@ routes.delete('/jobs/:id_job', authMiddleware, authorize(['Empresa']), async (re
  *       500:
  *         description: Erro interno do servidor
  */
-routes.get('/jobs', authMiddleware, authorize(['Candidato']), async (request, response) => new ListJobController().handle(request, response))
-
+routes.get('/jobs', auth_1.authMiddleware, (0, authorize_1.authorize)(['Candidato']), async (request, response) => new job_controller_1.ListJobController().handle(request, response));
 /**
  * @swagger
  * /jobs/{id_job}:
@@ -669,10 +648,6 @@ routes.get('/jobs', authMiddleware, authorize(['Candidato']), async (request, re
  *       500:
  *         description: Erro interno do servidor
  */
-routes.get('/jobs/:id_job', authMiddleware, authorize(['Candidato']), async (request, response) => new GetJobByIdController().handle(request, response))
-
-
-export default routes;
-
-
-
+routes.get('/jobs/:id_job', auth_1.authMiddleware, (0, authorize_1.authorize)(['Candidato']), async (request, response) => new job_controller_1.GetJobByIdController().handle(request, response));
+exports.default = routes;
+//# sourceMappingURL=routes.js.map
